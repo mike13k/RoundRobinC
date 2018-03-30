@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 struct Proc {
@@ -9,10 +10,13 @@ struct Proc {
 	int startTime;
 	int endTime;
 	int numTickets;
-}procReady[10];
+};
+
+
 
 int main(){
 
+struct Proc procReady[10];
 FILE * file;
 char * line = NULL;
 size_t len = 0;
@@ -38,41 +42,63 @@ if((read = getline(&line, &len, file)) != -1) {
 int i = 0;
 while ((read = getline(&line, &len, file)) != -1) {
 	char * word = strtok (line, ",");
-	char * splittedStringProc[4];
+	int * splittedStringProc[4];
 	int j = 0;
 	while(word != NULL) {
 		splittedStringProc[j++] = word;
 		word = strtok (NULL, ",");
 	}
-	procReady[i].id = splittedStringProc[0];
-	procReady[i].arTime = splittedStringProc[1];
-	procReady[i].cpu = splittedStringProc[2];
-	procReady[i].numTickets = splittedStringProc[3];
+	(procReady[i]).id = atoi(splittedStringProc[0]);
+	(procReady[i]).arTime = atoi(&splittedStringProc[1]);
+	(procReady[i]).cpu = atoi(&splittedStringProc[2]);
+	(procReady[i]).numTickets = atoi(&splittedStringProc[3]);
+	printf("%d\n",(procReady[i]).id);
+	printf("%d\n",(procReady[0]).id);
 	i++;
 }
 
-totalProc = i;
+totalProc = i-1;
 
-while(i > 0) {
-	
+clock_t totalStart = clock();
+
+while(totalProc > 0) {
+
 	if(procReady[0].cpu >= quantum){
-		time_t startTime = clock();
-		while(difftime(clock(), startTime) < (quantum*1000)) {}
+
+		clock_t startTime = clock();
+
+		while( (((double)(clock() - startTime))*1000/CLOCKS_PER_SEC) < (quantum) ) {}
 		procReady[0].cpu -= quantum;
 	}
 	else{
 		time_t startTime = clock();
-		while(difftime(clock(), startTime) < (procReady[0].cpu*1000)) {}
+		while( (((double)(clock() - startTime))*1000/CLOCKS_PER_SEC) < (procReady[0].cpu) ) {}
 		procReady[0].cpu = 0;
 	}
-	if(procReady[0].cpu != 0)
-		procReady[i] = procReady[0];
-	else
-		i -= 1;
+	if(procReady[0].cpu != 0){
+		procReady[totalProc] = procReady[0];
+	}
+	else{
+		totalProc -= 1;
+	}
 
-	for(int j = 0; j<i; j++) {
+	for(int j = 0; j<totalProc; j++) {
 		procReady[j] = procReady[j+1];
 	}
+
+        FILE *fp = NULL;
+
+        fp = fopen("outputRR.txt" ,"w");
+
+	char * text = "Write this to the file";
+
+        if (fp != NULL) {
+		printf("hi2");
+		fprintf(fp,"%s\n", text);
+		fclose(fp);
+	}
+
+                
 }
 
 fclose(file);
