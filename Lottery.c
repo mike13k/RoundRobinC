@@ -74,7 +74,7 @@ while(totalProcRunning > 0) {
 	int lotteryTicket = (rand() % tickets);
 	int index;
 	
-	printf("lotteryTicket %d \n" , lotteryTicket);
+	//printf("lotteryTicket %d \n" , lotteryTicket);
 	
 	
 	for(int x = 0; x < totalProcRunning; x++){
@@ -84,13 +84,13 @@ while(totalProcRunning > 0) {
 		}
 		else{
 			index = x;
-			printf("X UPDATED \n");
-			printf("__\n");
+			//printf("X UPDATED \n");
+			
 			x = totalProcRunning;
 		}
 	}
-	printf("index %d \n" , index);
-
+	//printf("index %d \n" , index);
+	//printf("__\n");
 	if(totalProcRunning != 0) {
 		char procLine[255] = "";
 		char currentTime[255] = "" ;
@@ -117,16 +117,16 @@ while(totalProcRunning > 0) {
 
 		clock_t startTime = clock();
 	
-		printf("enter loop1 \n");
+		//printf("enter loop1 \n");
 		while( ((((float)(clock() - startTime))/CLOCKS_PER_SEC)*1000) < (quantum) ) {}
-		printf("exit loop1 \n");
+		//printf("exit loop1 \n");
 		procReady[index].rem -= quantum;
 	}
 	else{
 		time_t startTime = clock();
-		printf("enter loop2 \n");
+		//printf("enter loop2 \n");
 		while( ((((float)(clock() - startTime))/CLOCKS_PER_SEC)*1000) < (procReady[index].rem) ) {}
-		printf("exit loop2 \n");
+		//printf("exit loop2 \n");
 
 		procReady[index].rem = 0;
 		
