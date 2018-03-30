@@ -25,6 +25,10 @@ int quantum;
 int tickets;
 int totalProc = 0;
 
+FILE *fp = NULL;
+
+fp = fopen("outputRR.txt" ,"w");
+
 file = fopen("./Input1.in", "r");
 
 if (file == NULL){
@@ -49,30 +53,30 @@ while ((read = getline(&line, &len, file)) != -1) {
 		word = strtok (NULL, ",");
 	}
 	(procReady[i]).id = atoi(splittedStringProc[0]);
-	(procReady[i]).arTime = atoi(&splittedStringProc[1]);
-	(procReady[i]).cpu = atoi(&splittedStringProc[2]);
-	(procReady[i]).numTickets = atoi(&splittedStringProc[3]);
-	printf("%d\n",(procReady[i]).id);
-	printf("%d\n",(procReady[0]).id);
+	(procReady[i]).arTime = atoi(splittedStringProc[1]);
+	(procReady[i]).cpu = atoi(splittedStringProc[2]);
+	(procReady[i]).numTickets = atoi(splittedStringProc[3]);
 	i++;
 }
 
-totalProc = i-1;
+totalProc = i;
 
 clock_t totalStart = clock();
 
 while(totalProc > 0) {
 
+
+
 	if(procReady[0].cpu >= quantum){
 
 		clock_t startTime = clock();
 
-		while( (((double)(clock() - startTime))*1000/CLOCKS_PER_SEC) < (quantum) ) {}
+		while( ((((float)(clock() - startTime))/CLOCKS_PER_SEC)*1000) != (quantum) ) {}
 		procReady[0].cpu -= quantum;
 	}
 	else{
 		time_t startTime = clock();
-		while( (((double)(clock() - startTime))*1000/CLOCKS_PER_SEC) < (procReady[0].cpu) ) {}
+		while( ((((float)(clock() - startTime))/CLOCKS_PER_SEC)*1000) != (procReady[0].cpu) ) {}
 		procReady[0].cpu = 0;
 	}
 	if(procReady[0].cpu != 0){
@@ -86,19 +90,21 @@ while(totalProc > 0) {
 		procReady[j] = procReady[j+1];
 	}
 
-        FILE *fp = NULL;
+	char procLine[255] = "";
+	char index[255] = "" ;
+	strcat(procLine, "Time ");
+       	sprintf(index, "%.f", ((((float)(clock() - totalStart))/CLOCKS_PER_SEC)*1000)); 
+        strcat(procLine,index);
+	fputs(procLine, fp);
+	putc('\n', fp);
 
-        fp = fopen("outputRR.txt" ,"w");
+}
 
-	char * text = "Write this to the file";
 
-        if (fp != NULL) {
-		printf("hi2");
-		fprintf(fp,"%s\n", text);
-		fclose(fp);
-	}
 
-                
+if (fp != NULL) {
+	//fprintf(fp,"%s\n", procLine);
+	fclose(fp);
 }
 
 fclose(file);
