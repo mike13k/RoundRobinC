@@ -52,8 +52,13 @@ while ((read = getline(&line, &len, file)) != -1) {
 	(procReady[i]).arTime = atoi(&splittedStringProc[1]);
 	(procReady[i]).cpu = atoi(&splittedStringProc[2]);
 	(procReady[i]).numTickets = atoi(&splittedStringProc[3]);
-	printf("%d\n",(procReady[i]).id);
+
 	printf("%d\n",(procReady[0]).id);
+	printf("%d\n",(procReady[1]).id);
+	printf("%d\n",(procReady[2]).id);
+	printf("%d\n",(procReady[3]).id);
+	printf("  \n");
+
 	i++;
 }
 
