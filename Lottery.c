@@ -118,14 +118,14 @@ while(totalProcRunning > 0) {
 		clock_t startTime = clock();
 	
 		printf("enter loop1 \n");
-		while( ((((float)(clock() - startTime))/CLOCKS_PER_SEC)*1000) != (quantum) ) {}
+		while( ((((float)(clock() - startTime))/CLOCKS_PER_SEC)*1000) < (quantum) ) {}
 		printf("exit loop1 \n");
 		procReady[index].rem -= quantum;
 	}
 	else{
 		time_t startTime = clock();
 		printf("enter loop2 \n");
-		while( ((((float)(clock() - startTime))/CLOCKS_PER_SEC)*1000) != (procReady[index].rem) ) {}
+		while( ((((float)(clock() - startTime))/CLOCKS_PER_SEC)*1000) < (procReady[index].rem) ) {}
 		printf("exit loop2 \n");
 
 		procReady[index].rem = 0;
